@@ -13,7 +13,7 @@ public class Level {
 
 	public Level( ){		
 	}
-	public static Level[ ] initializeLevels(int numLevels) {
+	public static Level[ ] initializedLevels(int numLevels) {
 		Level[ ] levels = new Level [numLevels];
 		for (int l = 0; l < numLevels; l++){    // for each level number
 			levels[l] = new Level( );
@@ -29,10 +29,14 @@ public class Level {
 
 		return levels;
 	}
-	
-	
 	public double scoreFromQuality(double quality) {
 		return quality + errorDistribution.draw();
+	}
+	public boolean isTopLevel( ) {
+		return levelUp == null;
+	}
+	public boolean isBottomLevel( ) {
+		return levelDown == null;
 	}
 	public static void main(String [ ] args) {
 		Level[ ] res = initializeLevels(3);
