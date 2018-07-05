@@ -39,7 +39,7 @@ public class Level {
 		return levelDown == null;
 	}
 	public static void main(String [ ] args) {
-		Level[ ] res = initializeLevels(3);
+		Level[ ] res = initializedLevels(3);
 		for(int l = 0; l < res.length; l++) {
 			System.out.println(l+" "+res[l].errorDistribution.stdev );
 		}
