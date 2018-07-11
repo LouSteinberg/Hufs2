@@ -12,6 +12,9 @@ public class Normal extends Distribution {
 	public Normal(double mean, double stDev){
 		this.mean = mean;
 		this.stDev = stDev;
+		this.sup = mean + 4*stdev;
+		this.sub = mean - 4*stdev;
+		this.pdf = x,mu,sigma -> 
 	}	
 	public double draw( ) {
 		return mean + fRandom.nextGaussian() * stDev;
