@@ -12,9 +12,10 @@ public class Normal extends Distribution {
 	public Normal(double mean, double stDev){
 		this.mean = mean;
 		this.stDev = stDev;
-		this.sup = mean + 4*stdev;
-		this.sub = mean - 4*stdev;
-		this.pdf = x,mu,sigma -> 
+		this.sup = mean + 4*stDev;
+		this.sub = mean - 4*stDev;
+		double variance = stDev * stDev;
+		this.pdf = x -> Math.exp(-(x-mean)*(x-mean)/(2*variance))/Math.sqrt(2*Math.PI*variance);
 	}	
 	public double draw( ) {
 		return mean + fRandom.nextGaussian() * stDev;
@@ -46,6 +47,10 @@ public class Normal extends Distribution {
 				sig3=sig3+1;
 			}
 		}
+//		double f1 = dist.pdf.apply(5.0);
+//		double f2 = dist.pdf.apply(6.0);
+		double halfInt = Integral.integrate(dist.pdf, 5.0, 10.0, 100);
+		System.out.println("half integral "+halfInt);
 		double mean = sum/ct;
 		double stDev = Math.sqrt((ct*sumsq-sum*sum)/((ct-1)*ct));
 		System.out.println("ct: "+ct);
