@@ -8,6 +8,8 @@ public class Level {
 	double cQDMeanB;
 	double cQDStDev;
 	
+	double genTime;
+	
 	Distribution topQualityDistribution; // only used on top level
 	Distribution errorDistribution = new Normal(0.0, 2.0);
 
@@ -22,11 +24,12 @@ public class Level {
 		levels[topNumber].topQualityDistribution = new Normal(10.0, 1.0);
 		for(int l = 1; l <= topNumber; l++) {   // for each level except 0
 			levels[l].levelDown = levels[l-1]; 
+			levels[l].genTime = 1.0;
 		}
 		for(int l = 0; l <= topNumber-1; l++) {   // for each level except top
 			levels[l].levelUp = levels[l+1]; 
 		}
-
+			
 		return levels;
 	}
 	public double scoreFromQuality(double quality) {
