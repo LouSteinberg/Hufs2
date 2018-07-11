@@ -13,12 +13,12 @@ public class Integral{
 		double sum = fn.apply(minX) / 2.0;
 		for(int i = 0; i<steps-1; i++) {
 			x += dX;
-			System.out.println("i "+i+",  x "+x );
+			//	System.out.println("i "+i+",  x "+x );
 			sum += fn.apply(x);
 		}
 		x += dX;
-		sum= (sum + fn.apply(x)/2.0)*dX;
-		System.out.println("sum = "+sum);
+		sum = (sum + fn.apply(x)/2.0)*dX;
+		// System.out.println("sum = "+sum);
 		return sum;
 	}
 	public static void main(String[ ] args) {
