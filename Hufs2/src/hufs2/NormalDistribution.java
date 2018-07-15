@@ -2,14 +2,14 @@ package hufs2;
 
 import java.util.Random;
 
-public class Normal extends Distribution {
+public class NormalDistribution extends Distribution {
 
 	public Random fRandom = new Random();
 	
 	public double mean;
 	public double stDev;
 
-	public Normal(double mean, double stDev){
+	public NormalDistribution(double mean, double stDev){
 		this.mean = mean;
 		this.stDev = stDev;
 		this.sup = mean + 4*stDev;
@@ -19,10 +19,11 @@ public class Normal extends Distribution {
 	}	
 	public double draw( ) {
 		return mean + fRandom.nextGaussian() * stDev;
-	}
+	}	
+	
 	public static void main(String [ ] args) {
-		Normal dist = new Normal(5.0, 1.0);
-		Normal diste = new Normal(0.0, 2.0);
+		NormalDistribution dist = new NormalDistribution(5.0, 1.0);
+		NormalDistribution diste = new NormalDistribution(0.0, 2.0);
 		double ct = 10000;
 		int sig1=0;
 		int sig2=0;

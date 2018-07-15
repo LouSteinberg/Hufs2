@@ -1,5 +1,7 @@
 package hufs2;
+
 // the distribution of A - B
+
 public class DifferenceDistribution extends Distribution{
 	Distribution a;
 	Distribution b;
