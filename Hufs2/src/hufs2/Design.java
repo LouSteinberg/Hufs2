@@ -1,5 +1,6 @@
 package hufs2;
 
+import java.util.ArrayList;
 import java.util.function.BinaryOperator;
 //import java.util.function.Function;
 
@@ -7,6 +8,7 @@ public class Design {
 	Level level;
 	double quality;
 	Design parent; 
+	ArrayList<Design> children = new ArrayList<Design>(); 
 	Distribution childScoreDistribution;
 	Distribution childErrorDistribution;
 	double score;
@@ -16,6 +18,7 @@ public class Design {
 	public Design(Design parent) {
 		Design child = this;
 		child.parent = parent;
+		parent.children.add(child);
 		child.level = parent.level.levelDown;
 		child.score = parent.childScoreDistribution.draw( );
 		child.error = parent.childErrorDistribution.draw( );
