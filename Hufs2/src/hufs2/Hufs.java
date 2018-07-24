@@ -21,11 +21,11 @@ public class Hufs {
 			Design child = new Design(parent);
 			tau -= parent.level.genTime;
 			allDesigns.add(child);
-			parent = findBest(allDesigns, tau, U0);
+			parent = bestByUtility(allDesigns, tau, U0);
 		}
-		System.out.println("tau "+tau+", U0 "+ U0.apply(parent.score, tau));
+		System.out.println("tau "+tau+", score "+parent.score+ ", U0 "+ U0.apply(parent.score, tau));
 	}
-	public static Design findBest(ArrayList<Design> designs, double tau, BinaryOperator<Double> u0) {
+	public static Design bestByUtility(ArrayList<Design> designs, double tau, BinaryOperator<Double> u0) {
 		Design bestDesign = designs.get(0);
 		double bestUtility = bestDesign.utility(tau, u0);
 		for (int d = 1; d < designs.size( ); d++) {
