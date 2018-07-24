@@ -6,9 +6,6 @@ public class NormalDistribution extends Distribution {
 
 	public Random fRandom = new Random();
 	
-	public double mean;
-	public double stDev;
-
 	public NormalDistribution(double mean, double stDev){
 		this.mean = mean;
 		this.stDev = stDev;
