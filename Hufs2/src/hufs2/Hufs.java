@@ -17,12 +17,14 @@ public class Hufs {
 	public static void testWaterfall(int repetitions) {
 		Level [ ] levels = Level.initializedLevels(NUMLEVELS);
 		ArrayList<Design> results = new ArrayList<Design>( );
+		ArrayList<Double> scores = new ArrayList<Double>( );
 		for (int r = 0; r < repetitions; r++) {
 			Design specs = new Design(levels[levels.length-1]);
 			Design result = waterfall(specs, levels, STARTTAU);
 			results.add(result);
+			scores.add(result.score);
 		}
-		
+		Stats.printMeanStDev(scores);;
 	}
 	
 	public static Design waterfall(Design specs, Level [ ] levels, double tau) {
