@@ -1,4 +1,4 @@
-package hufs2;
+package Math;
 
 import java.util.function.Function;
 

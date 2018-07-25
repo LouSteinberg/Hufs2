@@ -11,13 +11,35 @@ public class Hufs {
 	public static final Distribution TOPERRORDISTRIBUTION = new NormalDistribution(0.0, 1.0);	
 	
 	public static void main(String [ ] args) {
+		testWaterfall(10);
+		//		hufs(specs, levels, tau);
+	}
+	public static void testWaterfall(int repetitions) {
 		Level [ ] levels = Level.initializedLevels(NUMLEVELS);
-		Design specs = new Design(levels[levels.length]);
-		double tau = STARTTAU;
-		hufs(specs, levels, tau);
+		ArrayList<Design> results = new ArrayList<Design>( );
+		for (int r = 0; r < repetitions; r++) {
+			Design specs = new Design(levels[levels.length-1]);
+			Design result = waterfall(specs, levels, STARTTAU);
+			results.add(result);
+		}
+		
 	}
 	
-	public static void hufs(Design specs, Level [ ] levels, double tau) {
+	public static Design waterfall(Design specs, Level [ ] levels, double tau) {
+		Design parent = specs;
+		int kidsPerLevel = 3;
+		for (int levelNum = NUMLEVELS - 1; levelNum > 0; levelNum--) {
+			for (int j = 0; j < kidsPerLevel; j++) {
+				Design child = new Design(parent);
+				parent.children.add(child);
+			}
+			parent = bestByScore(parent.children);
+		}
+		System.out.println("tau "+tau+", score "+parent.score+ ", U0 "+ U0.apply(parent.score, tau));
+		return parent;
+	}
+	
+	public static Design hufs(Design specs, Level [ ] levels, double tau) {
 		ArrayList<Design> allDesigns = new ArrayList<Design>( );
 		Design parent = specs;
 		allDesigns.add(parent);
@@ -28,7 +50,7 @@ public class Hufs {
 			parent = bestByUtility(allDesigns, tau, U0);
 		}
 		System.out.println("tau "+tau+", score "+parent.score+ ", U0 "+ U0.apply(parent.score, tau));
-	}
+		return parent;}
 	public static Design bestByUtility(ArrayList<Design> designs, double tau, BinaryOperator<Double> u0) {
 		Design bestDesign = designs.get(0);
 		double bestUtility = bestDesign.utility(tau, u0);
@@ -37,6 +59,19 @@ public class Hufs {
 			double nextUtility = nextDesign.utility(tau, u0);
 			if (nextUtility > bestUtility) {
 				bestUtility = nextUtility;
+				bestDesign = nextDesign;
+			}
+		}
+		return bestDesign;
+	}
+	public static Design bestByScore(ArrayList<Design> designs) {
+		Design bestDesign = designs.get(0);
+		double bestscore = bestDesign.score;
+		for (int d = 1; d < designs.size( ); d++) {
+			Design nextDesign = designs.get(d);
+			double nextscore = nextDesign.score;
+			if (nextscore > bestscore) {
+				bestscore = nextscore;
 				bestDesign = nextDesign;
 			}
 		}
