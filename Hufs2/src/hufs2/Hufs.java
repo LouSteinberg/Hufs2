@@ -6,13 +6,13 @@ import java.util.function.BinaryOperator;
 public class Hufs {
 	public static final int NUMLEVELS = 3; // number of levels
 	public static final BinaryOperator<Double> U0 = (score, tau) -> tau>0 ? score : 0.0;
-	public static final double STARTTAU = 5.0;
+	public static final double STARTTAU = 9.0;
 	public static final Distribution TOPSCOREDISTRIBUTION = new NormalDistribution(10.0, 2.0);
 	public static final Distribution TOPERRORDISTRIBUTION = new NormalDistribution(0.0, 1.0);	
 	
 	public static void main(String [ ] args) {
-		testWaterfall(10);
-		//		hufs(specs, levels, tau);
+		testWaterfall(100);
+		testHufs(100);
 	}
 	public static void testWaterfall(int repetitions) {
 		Level [ ] levels = Level.initializedLevels(NUMLEVELS);
@@ -37,10 +37,22 @@ public class Hufs {
 			}
 			parent = bestByScore(parent.children);
 		}
-		System.out.println("tau "+tau+", score "+parent.score+ ", U0 "+ U0.apply(parent.score, tau));
+//		System.out.println("tau "+tau+", score "+parent.score+ ", U0 "+ U0.apply(parent.score, tau));
 		return parent;
 	}
 	
+	public static void testHufs(int repetitions) {
+		Level [ ] levels = Level.initializedLevels(NUMLEVELS);
+		ArrayList<Design> results = new ArrayList<Design>( );
+		ArrayList<Double> scores = new ArrayList<Double>( );
+		for (int r = 0; r < repetitions; r++) {
+			Design specs = new Design(levels[levels.length-1]);
+			Design result = hufs(specs, levels, STARTTAU);
+			results.add(result);
+			scores.add(result.score);
+		}
+		Stats.printMeanStDev(scores);;
+	}
 	public static Design hufs(Design specs, Level [ ] levels, double tau) {
 		ArrayList<Design> allDesigns = new ArrayList<Design>( );
 		Design parent = specs;
@@ -51,7 +63,7 @@ public class Hufs {
 			allDesigns.add(child);
 			parent = bestByUtility(allDesigns, tau, U0);
 		}
-		System.out.println("tau "+tau+", score "+parent.score+ ", U0 "+ U0.apply(parent.score, tau));
+//		System.out.println("tau "+tau+", score "+parent.score+ ", U0 "+ U0.apply(parent.score, tau));
 		return parent;}
 	public static Design bestByUtility(ArrayList<Design> designs, double tau, BinaryOperator<Double> u0) {
 		Design bestDesign = designs.get(0);
