@@ -1,6 +1,7 @@
 package hufs2;
 
 import java.util.Random;
+import java.util.ArrayList;
 
 public class NormalDistribution extends Distribution {
 
@@ -25,14 +26,12 @@ public class NormalDistribution extends Distribution {
 		int sig1=0;
 		int sig2=0;
 		int sig3=0;
-		double sum = 0;
-		double sumsq = 0;
+		ArrayList<Double> nums = new ArrayList<Double>( );
 		for (int j = 0; j<ct; j++) {
 			double drawn = dist.draw( );
 			double drawne = diste.draw( );
+			nums.add(drawn);
 			drawn += drawne;
-			sum += drawn;
-			sumsq += drawn*drawn;
 			// System.out.format("%g\n",drawn);
 			double err = drawn-4.96;
 			if (Math.abs(err)< 1.0*2.237) {
@@ -49,8 +48,8 @@ public class NormalDistribution extends Distribution {
 //		double f2 = dist.pdf.apply(6.0);
 		double halfInt = Integral.integrate(dist.pdf, 5.0, 10.0, 100);
 		System.out.println("half integral "+halfInt);
-		double mean = sum/ct;
-		double stDev = Math.sqrt((ct*sumsq-sum*sum)/((ct-1)*ct));
+		double mean = Stats.mean(nums);
+		double stDev = Stats.stDev(nums);
 		System.out.println("ct: "+ct);
 		System.out.println("mean: "+mean);
 		System.out.println("stDev: "+stDev);
