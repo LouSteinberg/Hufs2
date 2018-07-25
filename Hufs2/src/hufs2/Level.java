@@ -77,7 +77,7 @@ public class Level {
 					Integral.integrate((s -> (csd.pdf.apply(s) * 
 					                          Math.max(this.levelDown.utility(s,doneTime, u0),
 					                                   doneParentUtility))),
-					                   sub, sup, 1000);
+					                   sub, sup, 100);
 			return parentUtility;
 		}		
 	}

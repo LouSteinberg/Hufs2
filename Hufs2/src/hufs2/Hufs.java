@@ -15,6 +15,7 @@ public class Hufs {
 		testHufs(100);
 	}
 	public static void testWaterfall(int repetitions) {
+		System.out.println("testWaterfall:");
 		Level [ ] levels = Level.initializedLevels(NUMLEVELS);
 		ArrayList<Design> results = new ArrayList<Design>( );
 		ArrayList<Double> scores = new ArrayList<Double>( );
@@ -42,6 +43,7 @@ public class Hufs {
 	}
 	
 	public static void testHufs(int repetitions) {
+		System.out.println("testHufs:");
 		Level [ ] levels = Level.initializedLevels(NUMLEVELS);
 		ArrayList<Design> results = new ArrayList<Design>( );
 		ArrayList<Double> scores = new ArrayList<Double>( );
