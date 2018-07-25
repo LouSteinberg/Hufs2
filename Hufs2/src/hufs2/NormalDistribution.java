@@ -2,6 +2,8 @@ package hufs2;
 
 import java.util.Random;
 
+import Math.Integral;
+
 public class NormalDistribution extends Distribution {
 
 	public Random fRandom = new Random();
