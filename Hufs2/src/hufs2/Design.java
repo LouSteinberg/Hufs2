@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.function.BinaryOperator;
 //import java.util.function.Function;
 
+
 public class Design {
+	
+	public static int nextId = 0;  // id to be given to next Design generated
+	
 	Level level;
 	double quality;
 	Design parent; 
@@ -13,6 +17,7 @@ public class Design {
 	Distribution childErrorDistribution;
 	double score;
 	double error;
+	int id;
 	
 	// create a non-top-level Design object
 	public Design(Design parent) {
@@ -35,6 +40,8 @@ public class Design {
 	// initialize does the part of the initialization of a newly created Design object
 	// that is common between top-level and non-top-level designs.
 	public static void initialize(Design newDesign){
+		newDesign.id = nextId;
+		nextId++;
 		newDesign.quality = newDesign.score - newDesign.error;
 		//newDesign.score = newDesign.level.scoreFromQuality(newDesign.quality);
 
