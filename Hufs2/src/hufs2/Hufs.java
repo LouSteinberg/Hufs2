@@ -9,14 +9,18 @@ public class Hufs {
 	public static final double STARTTAU = 5.0;
 	public static final Distribution TOPSCOREDISTRIBUTION = new NormalDistribution(10.0, 2.0);
 	public static final Distribution TOPERRORDISTRIBUTION = new NormalDistribution(0.0, 1.0);	
-	public static  void main(String [ ] args) {
-		ArrayList<Design> allDesigns = new ArrayList<Design>( );
+	
+	public static void main(String [ ] args) {
 		Level [ ] levels = Level.initializedLevels(NUMLEVELS);
-		int numTopLevel = NUMLEVELS - 1;  // index/level number of top level
-		Design specs = new Design(levels[numTopLevel]);
+		Design specs = new Design(levels[levels.length]);
+		double tau = STARTTAU;
+		hufs(specs, levels, tau);
+	}
+	
+	public static void hufs(Design specs, Level [ ] levels, double tau) {
+		ArrayList<Design> allDesigns = new ArrayList<Design>( );
 		Design parent = specs;
 		allDesigns.add(parent);
-		double tau = STARTTAU;
 		while (! parent.level.isBottomLevel()) {
 			Design child = new Design(parent);
 			tau -= parent.level.genTime;
