@@ -18,6 +18,7 @@ public class Design {
 	double score;
 	double error;
 	int id;
+	double tauCreated;
 	
 	// create a non-top-level Design object
 	public Design(Design parent, double tau) {
@@ -27,7 +28,7 @@ public class Design {
 		child.level = parent.level.levelDown;
 		child.score = parent.childScoreDistribution.draw( );
 		child.error = parent.childErrorDistribution.draw( );
-		initialize(child, tau);
+		initialize(child, tau-parent.level.genTime);
 	}
 	// create a top-level Design object
 	public Design(Level level,double tau) {
