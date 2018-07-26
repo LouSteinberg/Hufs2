@@ -57,8 +57,8 @@ public class Design {
 	}
 	public static void traceCreation(Design design, double tau) {
 //		System.out.println("Design created.  id: "+design.id+", score: "+design.score+", utility at "+tau+" = "+utility);
-		System.out.format("Design created.  id: %d, score: %f, utility at %f = %f",
-				design.id, design.score, tau, design.utility(tau,Hufs.U0));
+		System.out.format("Design created.  id: %d, level: %d, score: %f, utility at %f = %f%n",
+				design.id, design.level.number, design.score, tau, design.utility(tau,Hufs.U0));
 	}
 	// utility of having this design (with score this.score) starting at time tau with given U_0
 	public double utility(double tau, BinaryOperator<Double> u0) {
