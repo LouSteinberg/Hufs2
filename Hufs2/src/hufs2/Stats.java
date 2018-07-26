@@ -13,6 +13,9 @@ public class Stats {
 	}
 
 	public static double stDev(ArrayList<Double> data) {
+		if(data.size( ) < 2) {
+			return 0.0;
+		}
 		double sum = 0.0;
 		double sumsq = 0.0;
 		for (double d: data){
