@@ -20,7 +20,7 @@ public class Design {
 	int id;
 	
 	// create a non-top-level Design object
-	public Design(Design parent) {
+	public Design(Design parent, double tau) {
 		Design child = this;
 		child.parent = parent;
 		parent.children.add(child);
@@ -30,7 +30,7 @@ public class Design {
 		initialize(child);
 	}
 	// create a top-level Design object
-	public Design(Level level) {
+	public Design(Level level,double tau) {
 		this.parent = null;
 		this.level = level;
 		this.score = level.topScoreDistribution.draw( );
@@ -53,8 +53,13 @@ public class Design {
 		double cEDStDev = newDesign.level.cEDStDev;
 		newDesign.childErrorDistribution =  new NormalDistribution(cEDMean, cEDStDev);				
 		
-			}
-	// utility of this design (with score this.score) starting at time tau with given U_0
+	}
+	public static void traceCreation(Design design, double tau) {
+//		System.out.println("Design created.  id: "+design.id+", score: "+design.score+", utility at "+tau+" = "+utility);
+		System.out.format("Design created.  id: %d, score: %f, utility at %f = %f",
+				design.id, design.score, tau, design.utility(tau,Hufs.U0));
+	}
+	// utility of having this design (with score this.score) starting at time tau with given U_0
 	public double utility(double tau, BinaryOperator<Double> u0) {
 		double doneTime = tau - this.level.genTime;
 		return level.utility(score, doneTime, u0);

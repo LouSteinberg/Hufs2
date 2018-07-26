@@ -20,7 +20,7 @@ public class Hufs {
 		ArrayList<Design> results = new ArrayList<Design>( );
 		ArrayList<Double> scores = new ArrayList<Double>( );
 		for (int r = 0; r < repetitions; r++) {
-			Design specs = new Design(levels[levels.length-1]);
+			Design specs = new Design(levels[levels.length-1], STARTTAU);
 			Design result = waterfall(specs, levels, STARTTAU);
 			results.add(result);
 			scores.add(result.score);
@@ -33,7 +33,8 @@ public class Hufs {
 		int kidsPerLevel = 3;
 		for (int levelNum = NUMLEVELS - 1; levelNum > 0; levelNum--) {
 			for (int j = 0; j < kidsPerLevel; j++) {
-				Design child = new Design(parent);
+				Design child = new Design(parent, tau);
+				tau -= parent.level.genTime;
 				parent.children.add(child);
 			}
 			parent = bestByScore(parent.children);
@@ -48,7 +49,7 @@ public class Hufs {
 		ArrayList<Design> results = new ArrayList<Design>( );
 		ArrayList<Double> scores = new ArrayList<Double>( );
 		for (int r = 0; r < repetitions; r++) {
-			Design specs = new Design(levels[levels.length-1]);
+			Design specs = new Design(levels[levels.length-1], STARTTAU);
 			Design result = hufs(specs, levels, STARTTAU);
 			results.add(result);
 			scores.add(result.score);
@@ -60,7 +61,7 @@ public class Hufs {
 		Design parent = specs;
 		allDesigns.add(parent);
 		while (! parent.level.isBottomLevel()) {
-			Design child = new Design(parent);
+			Design child = new Design(parent, tau);
 			tau -= parent.level.genTime;
 			allDesigns.add(child);
 			parent = bestByUtility(allDesigns, tau, U0);
