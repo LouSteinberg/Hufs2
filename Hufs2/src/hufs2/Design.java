@@ -27,7 +27,7 @@ public class Design {
 		child.level = parent.level.levelDown;
 		child.score = parent.childScoreDistribution.draw( );
 		child.error = parent.childErrorDistribution.draw( );
-		initialize(child);
+		initialize(child, tau);
 	}
 	// create a top-level Design object
 	public Design(Level level,double tau) {
@@ -35,11 +35,11 @@ public class Design {
 		this.level = level;
 		this.score = level.topScoreDistribution.draw( );
 		this.error = level.topErrorDistribution.draw( );
-		initialize(this);
+		initialize(this, tau);
 	}
 	// initialize does the part of the initialization of a newly created Design object
 	// that is common between top-level and non-top-level designs.
-	public static void initialize(Design newDesign){
+	public static void initialize(Design newDesign, double tau){
 		newDesign.id = nextId;
 		nextId++;
 		newDesign.quality = newDesign.score - newDesign.error;
@@ -53,6 +53,7 @@ public class Design {
 		double cEDStDev = newDesign.level.cEDStDev;
 		newDesign.childErrorDistribution =  new NormalDistribution(cEDMean, cEDStDev);				
 		
+		traceCreation(newDesign, tau);
 	}
 	public static void traceCreation(Design design, double tau) {
 //		System.out.println("Design created.  id: "+design.id+", score: "+design.score+", utility at "+tau+" = "+utility);
