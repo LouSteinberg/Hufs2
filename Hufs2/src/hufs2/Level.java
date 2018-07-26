@@ -41,7 +41,7 @@ public class Level {
 			levels[l].number = l;
 			levels[l].genTime = 1.0;
 			
-			levels[l].cSDMeanM = Math.pow(10.0, l+1.0);
+			levels[l].cSDMeanM = Math.pow(10.0, l);
 			levels[l].cSDMeanB = l* 10.0;
 			levels[l].cSDStDev = levels[l].cSDMeanM / 2.0;
 			
