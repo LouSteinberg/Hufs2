@@ -9,10 +9,10 @@ public class Hufs {
 	public static final double STARTTAU = 9.0;
 	public static final Distribution TOPSCOREDISTRIBUTION = new NormalDistribution(10.0, 2.0);
 	public static final Distribution TOPERRORDISTRIBUTION = new NormalDistribution(0.0, 1.0);	
-	
+	public static final boolean TRACE = false;
 	public static void main(String [ ] args) {
-//		testWaterfall(1);
-		testHufs(1);
+		testWaterfall(100);
+		testHufs(100);
 	}
 	public static void testWaterfall(int repetitions) {
 		System.out.println("testWaterfall:");

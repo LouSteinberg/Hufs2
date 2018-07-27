@@ -54,7 +54,9 @@ public class Design {
 		double cEDStDev = newDesign.level.cEDStDev;
 		newDesign.childErrorDistribution =  new NormalDistribution(cEDMean, cEDStDev);				
 		
-		traceCreation(newDesign, tau);
+		if (Hufs.TRACE) {
+			traceCreation(newDesign, tau);
+		}
 	}
 	public static void traceCreation(Design design, double tau) {
 		if (design.level.isTopLevel()) {
