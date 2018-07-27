@@ -7,14 +7,15 @@ public class Hufs {
 	public static final int NUMLEVELS = 3; // number of levels
 	public static final BinaryOperator<Double> U0 = (score, tau) -> tau>0 ? score : 0.0;
 //	public static final BinaryOperator<Double> U0 = (score, tau) -> slope(5.0, score, tau);
-	public static final double STARTTAU = 6.0;
+	public static final int KIDSPERLEVEL = 3;
+	public static final double STARTTAU = KIDSPERLEVEL * (NUMLEVELS-1);
 	public static final Distribution TOPSCOREDISTRIBUTION = new NormalDistribution(10.0, 2.0);
 	public static final Distribution TOPERRORDISTRIBUTION = new NormalDistribution(0.0, 1.0);	
-	public static final boolean TRACE = false;
+	public static final boolean TRACE = true;
 	
 	public static void main(String [ ] args) {
-		int reps = 100;
-		testWaterfall(reps);
+		int reps = 1;
+//		testWaterfall(reps);
 		testHufs(reps);
 //		testSlope( );
 	}
@@ -50,9 +51,8 @@ public class Hufs {
 	
 	public static Design waterfall(Design specs, Level [ ] levels, double tau) {
 		Design parent = specs;
-		int kidsPerLevel = 3;
 		for (int levelNum = NUMLEVELS - 1; levelNum > 0; levelNum--) {
-			for (int j = 0; j < kidsPerLevel; j++) {
+			for (int j = 0; j < KIDSPERLEVEL; j++) {
 				Design child = new Design(parent, tau);
 				tau -= parent.level.genTime;
 				parent.children.add(child);
@@ -69,7 +69,7 @@ public class Hufs {
 		ArrayList<Design> results = new ArrayList<Design>( );
 		ArrayList<Double> scores = new ArrayList<Double>( );
 		for (int r = 0; r < repetitions; r++) {
-//			System.out.print("x");
+			System.out.println("x");
 			Design specs = new Design(levels[levels.length-1], STARTTAU);
 			Design result = hufs(specs, levels, STARTTAU);
 			results.add(result);
