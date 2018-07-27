@@ -1,6 +1,7 @@
 package hufs2;
 
 import java.util.function.BinaryOperator;
+import java.lang.IllegalArgumentException;
 
 public class Level {
 	Level levelUp;
@@ -51,8 +52,12 @@ public class Level {
 			
 			levels[l].cSDMeanM = l * 10.0;
 			levels[l].cSDMeanB = l* 20.0;	
-			typicalScore = levels[l].cSDMeanB + levels[l].cSDMeanM*typicalScore;
-			levels[l].cSDStDev = typicalScore/4;
+			// at this point typicalChildScore is typical score for level l
+			typicalChildScore = levels[l].cSDMeanB + levels[l].cSDMeanM*typicalChildScore;
+			// now typicalChildScore is typical score for level l-1,ie typical child score for level l
+			levels[l].cSDStDev = typicalChildScore/4;
+			smallChildScore = typicalChildScore - 2 * levels[l].cSDStDev;
+			bigChildScore =  typicalChildScore + 2 * levels[l].cSDStDev;
 			
 			levels[l].cEDMeanM = 0.0;
 			levels[l].cEDMeanB = 0.0;
@@ -77,6 +82,9 @@ public class Level {
 	}
 	// utility of having a hypothetical design at this level with given score at given tau
 	public double utility(double score, double tau, BinaryOperator<Double> u0) {
+		if (tau < -1) {
+			throw new IllegalArgumentException( );
+		}
 		if (tau <= 0) {
 			return 0.0;
 		} else if (isBottomLevel( )) {
