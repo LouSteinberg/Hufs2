@@ -11,8 +11,8 @@ public class Hufs {
 	public static final Distribution TOPERRORDISTRIBUTION = new NormalDistribution(0.0, 1.0);	
 	
 	public static void main(String [ ] args) {
-//		testWaterfall(1);
-		testHufs(1);
+		testWaterfall(1);
+//		testHufs(1);
 	}
 	public static void testWaterfall(int repetitions) {
 		System.out.println("testWaterfall:");
