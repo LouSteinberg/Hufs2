@@ -40,7 +40,11 @@ public class Level {
 		double smallChildScore = 6.0;
 		double bigChildScore = 14.0;
 		
-		for(int l = 1; l <= topNumber; l++) {   // for each level except bottom
+		if (Hufs.TRACE) {
+			System.out.format("top-level scores: %f %f %f%n", smallChildScore, typicalChildScore, bigChildScore);
+		}
+		
+		for (int l = topNumber; l > 0; l--) {   // for each level except bottom, starting at top
 			levels[l].levelDown = levels[l-1]; 
 			levels[l].number = l;
 			levels[l].genTime = 1.0;
