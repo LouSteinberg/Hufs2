@@ -6,13 +6,33 @@ import java.util.function.BinaryOperator;
 public class Hufs {
 	public static final int NUMLEVELS = 3; // number of levels
 	public static final BinaryOperator<Double> U0 = (score, tau) -> tau>0 ? score : 0.0;
-	public static final double STARTTAU = 9.0;
+//	public static final BinaryOperator<Double> U0 = (score, tau) -> slope(5.0, score, tau);
+	public static final double STARTTAU = 6.0;
 	public static final Distribution TOPSCOREDISTRIBUTION = new NormalDistribution(10.0, 2.0);
 	public static final Distribution TOPERRORDISTRIBUTION = new NormalDistribution(0.0, 1.0);	
 	public static final boolean TRACE = false;
+	
 	public static void main(String [ ] args) {
-		testWaterfall(100);
-		testHufs(100);
+		int reps = 100;
+		testWaterfall(reps);
+		testHufs(reps);
+//		testSlope( );
+	}
+	public static double slope(double begin, double score, double tau) {
+		double utility;
+		if (tau > begin) {
+			utility = score;
+		} else if (tau <= 0.0) {
+			utility = 0.0;
+		} else {
+			utility = score*tau/begin;
+		}
+		return utility;
+	}
+	public static void testSlope( ) {
+		for (double x = -2.0; x<13; x+=1.0) {
+			System.out.format("%f:  %f3.2%n",x, slope(10, 100, x));
+		}
 	}
 	public static void testWaterfall(int repetitions) {
 		System.out.println("testWaterfall:");
@@ -49,10 +69,12 @@ public class Hufs {
 		ArrayList<Design> results = new ArrayList<Design>( );
 		ArrayList<Double> scores = new ArrayList<Double>( );
 		for (int r = 0; r < repetitions; r++) {
+//			System.out.print("x");
 			Design specs = new Design(levels[levels.length-1], STARTTAU);
 			Design result = hufs(specs, levels, STARTTAU);
 			results.add(result);
 			scores.add(result.score);
+//			System.out.println(r);
 		}
 		Stats.printMeanStDev(scores);;
 	}
@@ -60,7 +82,7 @@ public class Hufs {
 		ArrayList<Design> allDesigns = new ArrayList<Design>( );
 		Design parent = specs;
 		allDesigns.add(parent);
-		while (! parent.level.isBottomLevel()) {
+		while (! parent.level.isBottomLevel() && tau > 0.0) {
 			Design child = new Design(parent, tau);
 			tau -= parent.level.genTime;
 			allDesigns.add(child);
