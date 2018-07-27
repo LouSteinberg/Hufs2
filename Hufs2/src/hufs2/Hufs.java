@@ -11,8 +11,8 @@ public class Hufs {
 	public static final Distribution TOPERRORDISTRIBUTION = new NormalDistribution(0.0, 1.0);	
 	
 	public static void main(String [ ] args) {
-		testWaterfall(1);
-//		testHufs(1);
+//		testWaterfall(1);
+		testHufs(1);
 	}
 	public static void testWaterfall(int repetitions) {
 		System.out.println("testWaterfall:");
@@ -70,10 +70,10 @@ public class Hufs {
 		return parent;}
 	public static Design bestByUtility(ArrayList<Design> designs, double tau, BinaryOperator<Double> u0) {
 		Design bestDesign = designs.get(0);
-		double bestUtility = bestDesign.utility(tau, u0);
+		double bestUtility = bestDesign.utility(tau, u0, true);
 		for (int d = 1; d < designs.size( ); d++) {
 			Design nextDesign = designs.get(d);
-			double nextUtility = nextDesign.utility(tau, u0);
+			double nextUtility = nextDesign.utility(tau, u0, true);
 			if (nextUtility > bestUtility) {
 				bestUtility = nextUtility;
 				bestDesign = nextDesign;

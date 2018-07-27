@@ -63,11 +63,15 @@ public class Design {
 			System.out.format("Design created. id: %d, parent %d", design.id, design.parent.id);
 		}
 		System.out.format(", level: %d, score: %f, utility at %f = %f%n",
-				design.level.number, design.score, tau, design.utility(tau,Hufs.U0));
+				design.level.number, design.score, tau, design.utility(tau,Hufs.U0, false));
 	}
 	// utility of having this design (with score this.score) starting at time tau with given U_0
-	public double utility(double tau, BinaryOperator<Double> u0) {
+	public double utility(double tau, BinaryOperator<Double> u0,boolean trace) {
 		double doneTime = tau - this.level.genTime;
-		return level.utility(score, doneTime, u0);
+		double utility =  level.utility(score, doneTime, u0);
+		if (trace) {
+//			System.out.format("utility of %d at %f.3 is %f%n", this.id, tau, utility);
+		}
+		return utility;
 	}
 }
