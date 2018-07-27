@@ -6,9 +6,9 @@ import java.util.function.BinaryOperator;
 
 
 public class Design {
-	
+
 	public static int nextId = 0;  // id to be given to next Design generated
-	
+
 	Level level;
 	double quality;
 	Design parent; 
@@ -19,7 +19,7 @@ public class Design {
 	double error;
 	int id;
 	double tauCreated;
-	
+
 	// create a non-top-level Design object
 	public Design(Design parent, double tau) {
 		Design child = this;
@@ -53,26 +53,30 @@ public class Design {
 		double cEDMean = newDesign.level.cEDMeanB + newDesign.level.cEDMeanM * newDesign.score;
 		double cEDStDev = newDesign.level.cEDStDev;
 		newDesign.childErrorDistribution =  new NormalDistribution(cEDMean, cEDStDev);				
-		
-		if (Hufs.TRACE) {
-			traceCreation(newDesign, tau);
-		}
+
+		traceCreation(newDesign, tau);
 	}
 	public static void traceCreation(Design design, double tau) {
-		if (design.level.isTopLevel()) {
-			System.out.format("top level design created, id: %d", design.id);
-		} else {
-			System.out.format("Design created. id: %d, parent %d", design.id, design.parent.id);
+		if (Hufs.TRACE) {
+			if (design.level.isTopLevel()) {
+				System.out.format("top level design created, id: %d", design.id);
+			} else {
+				System.out.format("Design created. id: %d, parent %d", design.id, design.parent.id);
+			}
+			System.out.format(", level: %d, score: %8.1f, utility at %5.2f = %8.2f%n",
+					design.level.number, design.score, tau, design.utility(tau,Hufs.U0, false));
+			if (design.score <-5) {
+				System.out.println("NEG SCORE");
+				throw new IllegalArgumentException();
+			}
 		}
-		System.out.format(", level: %d, score: %f, utility at %f = %f%n",
-				design.level.number, design.score, tau, design.utility(tau,Hufs.U0, false));
 	}
 	// utility of having this design (with score this.score) starting at time tau with given U_0
 	public double utility(double tau, BinaryOperator<Double> u0,boolean trace) {
 		double doneTime = tau - this.level.genTime;
-		double utility =  level.utility(score, doneTime, u0);
+		double utility =  level.utility(this.score, doneTime, u0);
 		if (trace) {
-//			System.out.format("utility of %d at %f.3 is %f%n", this.id, tau, utility);
+			//			System.out.format("utility of %d at %f.3 is %f%n", this.id, tau, utility);
 		}
 		return utility;
 	}

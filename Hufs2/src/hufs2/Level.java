@@ -36,7 +36,9 @@ public class Level {
 		
 		levels[0].number = 0;
 		
-		double typicalScore = 10.0;
+		double typicalChildScore = 10.0;  // actually these are inited to typical etc toplevel scores
+		double smallChildScore = 6.0;
+		double bigChildScore = 14.0;
 		
 		for(int l = 1; l <= topNumber; l++) {   // for each level except bottom
 			levels[l].levelDown = levels[l-1]; 
@@ -53,8 +55,8 @@ public class Level {
 			levels[l].cEDStDev = levels[l].cSDStDev / 2.0;
 			
 			if (Hufs.TRACE) {
-				System.out.format("Level %d, typical score %f, stDev %f%n",
-						levels[l].number, typicalScore, levels[l].cSDStDev);
+				System.out.format("Level %d scores %f %f %f, stDev %f%n",
+						l-1, smallChildScore, typicalChildScore, bigChildScore, levels[l].cSDStDev);
 			}
 		}
 		for(int l = 0; l <= topNumber-1; l++) {   // for each level except top
