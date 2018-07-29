@@ -82,10 +82,7 @@ public class Level {
 	}
 	// utility of having a hypothetical design at this level with given score at given tau
 	public double utility(double score, double tau, BinaryOperator<Double> u0) {
-		if (tau < -1) {
-			throw new IllegalArgumentException( );
-		}
-		if (tau <= 0) {
+		if (tau < 0) {
 			return 0.0;
 		} else if (isBottomLevel( )) {
 			return  u0.apply(score, tau);
