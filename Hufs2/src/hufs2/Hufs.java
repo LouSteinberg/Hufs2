@@ -5,7 +5,7 @@ import java.util.function.BinaryOperator;
 
 public class Hufs {
 	public static final int NUMLEVELS = 3; // number of levels
-	public static final BinaryOperator<Double> U0 = (score, tau) -> tau>0 ? score : 0.0;
+	public static final BinaryOperator<Double> U0 = (score, tau) -> tau>=0 ? score : 0.0;
 //	public static final BinaryOperator<Double> U0 = (score, tau) -> slope(5.0, score, tau);
 	public static final int KIDSPERLEVEL = 3;
 	public static final double STARTTAU = KIDSPERLEVEL * (NUMLEVELS-1);
@@ -40,13 +40,18 @@ public class Hufs {
 		Level [ ] levels = Level.initializedLevels(NUMLEVELS);
 		ArrayList<Design> results = new ArrayList<Design>( );
 		ArrayList<Double> scores = new ArrayList<Double>( );
+		ArrayList<Double> utilities = new ArrayList<Double>( );
 		for (int r = 0; r < repetitions; r++) {
 			Design specs = new Design(levels[levels.length-1], STARTTAU);
 			Design result = waterfall(specs, levels, STARTTAU);
 			results.add(result);
 			scores.add(result.score);
+			utilities.add(Hufs.U0.apply(result.score,0.0));
 		}
-		Stats.printMeanStDev(scores);;
+		System.out.println("scores:");
+		Stats.printMeanStDev(scores);
+		System.out.println("utilities:");
+		Stats.printMeanStDev(utilities);
 	}
 	
 	public static Design waterfall(Design specs, Level [ ] levels, double tau) {
