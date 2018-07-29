@@ -71,11 +71,12 @@ public class Design {
 	}
 	// utility of having this design (with score this.score) starting at time tau with given U_0
 	public double utility(double tau, BinaryOperator<Double> u0,boolean trace) {
-		double doneTime = tau - this.level.genTime;
-		double utility =  level.utility(this.score, doneTime, u0);
-		if (trace) {
-			//			System.out.format("utility of %d at %f.3 is %f%n", this.id, tau, utility);
+//		double childDoneTime = tau - this.level.genTime;
+		if ((tau == 1) && this.level.number == 1) {
+			tau = 1; // for debugging		
 		}
+		double utility =  level.utility(this.score, tau, u0);
+//		System.out.format("tau:  %3.1f, level: %d%n", tau, level.number);
 		return utility;
 	}
 }

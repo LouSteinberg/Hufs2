@@ -80,13 +80,15 @@ public class Level {
 	public boolean isBottomLevel( ) {
 		return levelDown == null;
 	}
-	// utility of having a hypothetical design at this level with given score at given tau
+	// utility of hypothetical design Hp at this level with given score, available at given tau
 	public double utility(double score, double tau, BinaryOperator<Double> u0) {
 		if (tau < 0) {
 			return 0.0;
 		} else if (isBottomLevel( )) {
 			return  u0.apply(score, tau);
-		} else {
+		} else {	// \int P(score of child Hc = s) * (utility of having both Hc and Hp at tau-gentimep) ds
+					// = \int CSDp(s)*max(utility of a child Hc at leveldown with score s at donetime, 
+			        //                    utility of Hp at donetime
 			Distribution csd = childScoreDistribution(score);
 			double sub = csd.sub;
 			double sup = csd.sup;
