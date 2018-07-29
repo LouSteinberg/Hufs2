@@ -54,6 +54,8 @@ public class Design {
 		double cEDStDev = newDesign.level.cEDStDev;
 		newDesign.childErrorDistribution =  new NormalDistribution(cEDMean, cEDStDev);				
 
+		newDesign.tauCreated = tau;
+		
 		traceCreation(newDesign, tau);
 	}
 	public static void traceCreation(Design design, double tau) {

@@ -15,7 +15,7 @@ public class Hufs {
 	public static final boolean TRACE = Hufs.TESTREPS < 5;
 	
 	public static void main(String [ ] args) {
-		testWaterfall(Hufs.TESTREPS);
+//		testWaterfall(Hufs.TESTREPS);
 		testHufs(Hufs.TESTREPS);
 //		testSlope( );
 	}
