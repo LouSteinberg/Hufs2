@@ -65,10 +65,6 @@ public class Design {
 			}
 			System.out.format(", level: %d, score: %8.1f, utility at %5.2f = %8.2f%n",
 					design.level.number, design.score, tau, design.utility(tau,Hufs.U0, false));
-			if (design.score <-5) {
-				System.out.println("NEG SCORE");
-				throw new IllegalArgumentException();
-			}
 		}
 	}
 	// utility of having this design (with score this.score) starting at time tau with given U_0
