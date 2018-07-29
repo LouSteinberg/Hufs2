@@ -11,7 +11,7 @@ public class Hufs {
 	public static final double STARTTAU = KIDSPERLEVEL * (NUMLEVELS-1);
 	public static final Distribution TOPSCOREDISTRIBUTION = new NormalDistribution(10.0, 2.0);
 	public static final Distribution TOPERRORDISTRIBUTION = new NormalDistribution(0.0, 1.0);	
-	public static final int TESTREPS = 100;
+	public static final int TESTREPS = 1;
 	public static final boolean TRACE = Hufs.TESTREPS < 5;
 	
 	public static void main(String [ ] args) {
@@ -96,9 +96,11 @@ public class Hufs {
 	public static Design bestByUtility(ArrayList<Design> designs, double tau, BinaryOperator<Double> u0) {
 		Design bestDesign = designs.get(0);
 		double bestUtility = bestDesign.utility(tau, u0, true);
+		traceUtility(bestDesign.id, tau, bestUtility);
 		for (int d = 1; d < designs.size( ); d++) {
 			Design nextDesign = designs.get(d);
 			double nextUtility = nextDesign.utility(tau, u0, true);
+			traceUtility(nextDesign.id, tau, nextUtility);
 			if (nextUtility > bestUtility) {
 				bestUtility = nextUtility;
 				bestDesign = nextDesign;
@@ -106,7 +108,14 @@ public class Hufs {
 		}
 		return bestDesign;
 	}
-	public static Design bestByScore(ArrayList<Design> designs) {
+	public static void traceUtility(int id, double tau, double utility) {
+		if (Hufs.TRACE) {
+			System.out.format("  at %5.1f, utility of design %d is %8.2f%n", tau, id, utility);
+		}
+	}
+		
+		
+		public static Design bestByScore(ArrayList<Design> designs) {
 		Design bestDesign = designs.get(0);
 		double bestscore = bestDesign.score;
 		for (int d = 1; d < designs.size( ); d++) {
