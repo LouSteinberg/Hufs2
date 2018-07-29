@@ -25,8 +25,9 @@ public class Stats {
 		int ct = data.size( );
 		return Math.sqrt((ct*sumsq-sum*sum)/((ct-1)*ct));
 	}
-	public static void printMeanStDev(ArrayList<Double> data) {
-		System.out.println("mean: "+Stats.mean(data)+ ", stDev: "+ Stats.stDev(data));
+	public static void printMeanStDev(String label, ArrayList<Double> data) {
+		System.out.println(label);
+		System.out.println("  mean: "+Stats.mean(data)+ ", stDev: "+ Stats.stDev(data));
 	}
 	
 	public static void main(String  [ ] args) {
@@ -34,7 +35,7 @@ public class Stats {
 		a.add(2.0);
 		a.add(3.5);
 		a.add(4.0);
-		printMeanStDev(a);
+		printMeanStDev("a", a);
 		// mean is 3.16667, stdev is 1.04083
 	}
 }
