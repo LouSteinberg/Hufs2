@@ -11,12 +11,12 @@ public class Hufs {
 	public static final double STARTTAU = KIDSPERLEVEL * (NUMLEVELS-1);
 	public static final Distribution TOPSCOREDISTRIBUTION = new NormalDistribution(10.0, 2.0);
 	public static final Distribution TOPERRORDISTRIBUTION = new NormalDistribution(0.0, 1.0);	
-	public static final boolean TRACE = true;
+	public static final int TESTREPS = 1;
+	public static final boolean TRACE = Hufs.TESTREPS < 5;
 	
 	public static void main(String [ ] args) {
-		int reps = 1;
-//		testWaterfall(reps);
-		testHufs(reps);
+//		testWaterfall(Hufs.TESTREPS);
+		testHufs(Hufs.TESTREPS);
 //		testSlope( );
 	}
 	public static double slope(double begin, double score, double tau) {
