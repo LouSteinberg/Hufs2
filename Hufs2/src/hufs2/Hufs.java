@@ -53,15 +53,15 @@ public class Hufs {
 		Stats.printMeanStDev(" utilities:",utilities);
 	}
 	
-	public static Design waterfall(Design specs, Level [ ] levels, double tau) {
+	public static Design waterfall(Design specs, Level [ ] levels, double tau) { 
 		Design parent = specs;
 		for (int levelNum = NUMLEVELS - 1; levelNum > 0; levelNum--) {
 			for (int j = 0; j < KIDSPERLEVEL; j++) {
 				Design child = new Design(parent, tau);
 				tau -= parent.level.genTime;
-				parent.children.add(child);
+				parent.kids.add(child);
 			}
-			parent = bestByScore(parent.children);
+			parent = bestByScore(parent.kids);
 		}
 //		System.out.println("tau "+tau+", score "+parent.score+ ", U0 "+ U0.apply(parent.score, tau));
 		return parent;

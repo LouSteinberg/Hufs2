@@ -3,7 +3,7 @@ package hufs2;
 import java.util.ArrayList;
 import java.util.function.BinaryOperator;
 //import java.util.function.Function;
-
+import java.lang.IllegalArgumentException;
 
 public class Design {
 
@@ -12,19 +12,44 @@ public class Design {
 	Level level;
 	double quality;
 	Design parent; 
-	ArrayList<Design> children = new ArrayList<Design>(); 
+	ArrayList<Design> kids = new ArrayList<Design>(); 
+	ArrayList<Design> cachedKids = new ArrayList<Design>();
+	int cachedKidsUsed; // number of cached kids that have been reused so far in this run, also index of next cached kid to use
 	Distribution childScoreDistribution;
 	Distribution childErrorDistribution;
 	double score;
 	double error;
 	int id;
 	double tauCreated;
-
+	
+	// reuse an existing Design object, or create a new one if can't reuse
+	public Design generate(double tau) {
+		Design parent = this;
+		if (parent.cachedKidsUsed > parent.cachedKids.size( )) {
+			throw new IllegalArgumentException( );	
+		}
+		if (parent.cachedKidsUsed >= parent.cachedKids.size()) {  // if have used all cached kids
+			Design newChild = new Design(this, tau);
+			newChild.clean( );
+			parent.cachedKids.add(newChild);
+			return newChild;
+		} else {  // use next cached child
+			Design newChild = parent.cachedKids.get(parent.cachedKidsUsed); 
+			parent.cachedKidsUsed ++;
+			parent.kids.add(newChild);
+			return newChild;
+		}
+	}
+	
+	public void clean( ) { // restore design to just-initialized state
+		this.kids = new ArrayList<Design>( );
+		this.cachedKidsUsed = 0;
+	}
 	// create a non-top-level Design object
 	public Design(Design parent, double tau) {
 		Design child = this;
 		child.parent = parent;
-		parent.children.add(child);
+		parent.kids.add(child);
 		child.level = parent.level.levelDown;
 		child.score = parent.childScoreDistribution.draw( );
 		child.error = parent.childErrorDistribution.draw( );
