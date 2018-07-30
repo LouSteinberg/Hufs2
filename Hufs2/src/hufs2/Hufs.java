@@ -15,7 +15,8 @@ public class Hufs {
 	public static final boolean TRACE = Hufs.TESTREPS < 5;
 	
 	public static void main(String [ ] args) {
-//		testWaterfall(Hufs.TESTREPS);
+		testWaterfall(Hufs.TESTREPS);
+		Design.nextId = 0;
 		testHufs(Hufs.TESTREPS);
 //		testSlope( );
 	}
@@ -96,11 +97,11 @@ public class Hufs {
 	public static Design bestByUtility(ArrayList<Design> designs, double tau, BinaryOperator<Double> u0) {
 		Design bestDesign = designs.get(0);
 		double bestUtility = bestDesign.utility(tau, u0, true);
-		traceUtility(bestDesign.id, tau, bestUtility);
+		traceUtility(bestDesign.id, bestDesign.level.number, tau, bestUtility);
 		for (int d = 1; d < designs.size( ); d++) {
 			Design nextDesign = designs.get(d);
 			double nextUtility = nextDesign.utility(tau, u0, true);
-			traceUtility(nextDesign.id, tau, nextUtility);
+ 			traceUtility(nextDesign.id, nextDesign.level.number, tau, nextUtility);
 			if (nextUtility > bestUtility) {
 				bestUtility = nextUtility;
 				bestDesign = nextDesign;
@@ -108,9 +109,9 @@ public class Hufs {
 		}
 		return bestDesign;
 	}
-	public static void traceUtility(int id, double tau, double utility) {
+	public static void traceUtility(int id, int levelNum, double tau, double utility) {
 		if (Hufs.TRACE) {
-			System.out.format("  at %5.1f, utility of design %d is %8.2f%n", tau, id, utility);
+			System.out.format("  at %5.1f, utility of design %d level %d, is %8.2f%n", tau, id, levelNum, utility);
 		}
 	}
 		
