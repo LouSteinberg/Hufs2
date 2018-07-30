@@ -41,7 +41,7 @@ public class Design {
 		}
 	}
 	
-	public void clean( ) { // restore design to just-initialized state
+	public void clean( ) { // restore design to just-initialized state.  does NOT forget cached kids, but restarts their use
 		this.kids = new ArrayList<Design>( );
 		this.cachedKidsUsed = 0;
 	}

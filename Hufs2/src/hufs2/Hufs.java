@@ -11,13 +11,13 @@ public class Hufs {
 	public static final double STARTTAU = KIDSPERLEVEL * (NUMLEVELS-1);
 	public static final Distribution TOPSCOREDISTRIBUTION = new NormalDistribution(10.0, 2.0);
 	public static final Distribution TOPERRORDISTRIBUTION = new NormalDistribution(0.0, 1.0);	
-	public static final int TESTREPS = 1;
+	public static final int TESTREPS = 2;
 	public static final boolean TRACE = Hufs.TESTREPS < 5;
 	
 	public static void main(String [ ] args) {
 		testWaterfall(Hufs.TESTREPS);
-		Design.nextId = 0;
-		testHufs(Hufs.TESTREPS);
+//		Design.nextId = 0;
+//		testHufs(Hufs.TESTREPS);
 //		testSlope( );
 	}
 	public static double slope(double begin, double score, double tau) {
@@ -42,8 +42,9 @@ public class Hufs {
 		ArrayList<Design> results = new ArrayList<Design>( );
 		ArrayList<Double> scores = new ArrayList<Double>( );
 		ArrayList<Double> utilities = new ArrayList<Double>( );
+		Design specs = new Design(levels[levels.length-1], STARTTAU);
 		for (int r = 0; r < repetitions; r++) {
-			Design specs = new Design(levels[levels.length-1], STARTTAU);
+			specs.clean( );
 			Design result = waterfall(specs, levels, STARTTAU);
 			results.add(result);
 			scores.add(result.score);
@@ -57,7 +58,7 @@ public class Hufs {
 		Design parent = specs;
 		for (int levelNum = NUMLEVELS - 1; levelNum > 0; levelNum--) {
 			for (int j = 0; j < KIDSPERLEVEL; j++) {
-				Design child = new Design(parent, tau);
+				Design child = parent.generate(tau);
 				tau -= parent.level.genTime;
 				parent.kids.add(child);
 			}
@@ -114,7 +115,6 @@ public class Hufs {
 			System.out.format("  at %5.1f, utility of design %d level %d, is %8.2f%n", tau, id, levelNum, utility);
 		}
 	}
-		
 		
 		public static Design bestByScore(ArrayList<Design> designs) {
 		Design bestDesign = designs.get(0);
