@@ -22,6 +22,10 @@ public class Design {
 	int id;
 	double tauCreated;
 	
+	public String toString( ) {
+		return format("Design-%d:sc-%8.1d", id, score);
+	}
+	
 	// reuse an existing Design object, or create a new one if can't reuse
 	public Design generate(double tau) {
 		Design parent = this;
