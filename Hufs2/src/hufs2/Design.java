@@ -23,26 +23,27 @@ public class Design {
 	double tauCreated;
 	
 	public String toString( ) {
-		return format("Design-%d:sc-%8.1d", id, score);
+		return String.format("Design=%d:level=%d:sc=%1.1f", id, level.number,  score);
 	}
 	
 	// reuse an existing Design object, or create a new one if can't reuse
 	public Design generate(double tau) {
 		Design parent = this;
-		if (parent.cachedKidsUsed > parent.cachedKids.size( )) {
+		if (parent.cachedKidsUsed > parent.cachedKids.size( )) { // more used than exist: impossible
 			throw new IllegalArgumentException( );	
 		}
+		Design newChild;
 		if (parent.cachedKidsUsed >= parent.cachedKids.size()) {  // if have used all cached kids
-			Design newChild = new Design(this, tau);
-			newChild.clean( );
-			parent.cachedKids.add(newChild);
-			return newChild;
+			newChild = new Design(this, tau);
 		} else {  // use next cached child
-			Design newChild = parent.cachedKids.get(parent.cachedKidsUsed); 
-			parent.cachedKidsUsed ++;
-			parent.kids.add(newChild);
+			newChild = parent.cachedKids.get(parent.cachedKidsUsed); 
+			newChild.clean( );			
+			traceReuse(newChild, tau);
 			return newChild;
 		}
+		parent.kids.add(newChild);
+		parent.cachedKidsUsed ++;
+		return newChild;
 	}
 	
 	public void clean( ) { // restore design to just-initialized state.  does NOT forget cached kids, but restarts their use
@@ -98,6 +99,17 @@ public class Design {
 					design.level.number, design.score, tau, design.utility(tau,Hufs.U0, false));
 		}
 	}
+	public static void traceReuse(Design design, double tau) {
+		if (Hufs.TRACE) {
+			if (design.level.isTopLevel()) {
+				System.out.format("top level design reused, id: %d", design.id);
+			} else {
+				System.out.format("Design reused. id: %d, parent %d", design.id, design.parent.id);
+			}
+			System.out.format(", level: %d, score: %8.1f, utility at %5.2f = %8.2f%n",
+					design.level.number, design.score, tau, design.utility(tau,Hufs.U0, false));
+		}
+	}
 	// utility of having this design (with score this.score) starting at time tau with given U_0
 	public double utility(double tau, BinaryOperator<Double> u0,boolean trace) {
 //		double childDoneTime = tau - this.level.genTime;
@@ -107,5 +119,22 @@ public class Design {
 		double utility =  level.utility(this.score, tau, u0);
 //		System.out.format("tau:  %3.1f, level: %d%n", tau, level.number);
 		return utility;
+	}
+	public void printKids(boolean cached) {
+		for (Design d : (cached?this.kids:this.cachedKids)){
+			System.out.println(d);
+		}
+	}
+	public static void main(String [ ] args) {
+		Level [ ] levels = Level.initializedLevels(Hufs.NUMLEVELS);
+		Design specs = new Design(levels[levels.length-1], Hufs.STARTTAU);
+		specs.generate(0);
+		specs.generate(0);
+		specs.printKids(false) ;
+		specs.generate(0);
+		specs.generate(0);
+		specs.generate(0);
+		specs.printKids(false );
+					
 	}
 }
