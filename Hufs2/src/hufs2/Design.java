@@ -35,14 +35,14 @@ public class Design {
 		Design newChild;
 		if (parent.cachedKidsUsed >= parent.cachedKids.size()) {  // if have used all cached kids
 			newChild = new Design(this, tau);
+			parent.cachedKids.add(newChild);
 		} else {  // use next cached child
 			newChild = parent.cachedKids.get(parent.cachedKidsUsed); 
 			newChild.clean( );			
+			parent.kids.add(newChild);
 			traceReuse(newChild, tau);
-			return newChild;
 		}
-		parent.kids.add(newChild);
-		parent.cachedKidsUsed ++;
+		parent.cachedKidsUsed ++;  // we have either reused a existing child or created and cached a new one
 		return newChild;
 	}
 	
@@ -131,6 +131,7 @@ public class Design {
 		specs.generate(0);
 		specs.generate(0);
 		specs.printKids(false) ;
+		specs.clean();
 		specs.generate(0);
 		specs.generate(0);
 		specs.generate(0);
