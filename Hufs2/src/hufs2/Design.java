@@ -57,7 +57,11 @@ public class Design {
 		parent.kids.add(child);
 		child.level = parent.level.levelDown;
 		child.score = parent.childScoreDistribution.draw( );
-		child.error = parent.childErrorDistribution.draw( );
+		if (child.level.isBottomLevel()) {
+			child.error = 0;
+		} else {
+			child.error = parent.childErrorDistribution.draw( );	
+		}
 		initialize(child, tau-parent.level.genTime);
 	}
 	// create a top-level Design object
