@@ -11,11 +11,12 @@ public class Hufs {
 	public static final double STARTTAU = KIDSPERLEVEL * (NUMLEVELS-1);
 	public static final Distribution TOPSCOREDISTRIBUTION = new NormalDistribution(10.0, 2.0);
 	public static final Distribution TOPERRORDISTRIBUTION = new NormalDistribution(0.0, 1.0);	
-	public static final int TESTREPS = 2;
-	public static final boolean TRACE = Hufs.TESTREPS < 5;
+	public static final int TESTREPS = 1;
+	public static boolean TRACE = Hufs.TESTREPS < 5;
 	
 	public static void main(String [ ] args) {
-		testWaterfall(Hufs.TESTREPS);
+//		testReuseHufs(1);
+		testWaterfallHufs(Hufs.TESTREPS);
 //		Design.nextId = 0;
 //		testHufs(Hufs.TESTREPS);
 //		testSlope( );
@@ -36,15 +37,31 @@ public class Hufs {
 			System.out.format("%f:  %f3.2%n",x, slope(10, 100, x));
 		}
 	}
+	public static void testWaterfallHufs(int repetitions) {
+		System.out.println("testWaterfallHufs:");
+		Level [ ] levels = Level.initializedLevels(NUMLEVELS);
+//		ArrayList<Design> results = new ArrayList<Design>( );
+//		ArrayList<Double> scores = new ArrayList<Double>( );
+//		ArrayList<Double> utilities = new ArrayList<Double>( );
+		for (int r = 0; r < repetitions; r++) {
+			Design specs = new Design(levels[levels.length-1], STARTTAU);
+			System.out.println("Waterfall:");
+			Design wfResult = waterfall(specs, levels, STARTTAU);
+			specs.clean( );
+			System.out.println("Hufs:");
+			Design hufsResult = hufs(specs, levels, STARTTAU);
+			
+		}
+	}
+	
 	public static void testWaterfall(int repetitions) {
 		System.out.println("testWaterfall:");
 		Level [ ] levels = Level.initializedLevels(NUMLEVELS);
 		ArrayList<Design> results = new ArrayList<Design>( );
 		ArrayList<Double> scores = new ArrayList<Double>( );
 		ArrayList<Double> utilities = new ArrayList<Double>( );
-		Design specs = new Design(levels[levels.length-1], STARTTAU);
 		for (int r = 0; r < repetitions; r++) {
-			specs.clean( );
+			Design specs = new Design(levels[levels.length-1], STARTTAU);
 			Design result = waterfall(specs, levels, STARTTAU);
 			results.add(result);
 			scores.add(result.score);
@@ -66,6 +83,17 @@ public class Hufs {
 		}
 //		System.out.println("tau "+tau+", score "+parent.score+ ", U0 "+ U0.apply(parent.score, tau));
 		return parent;
+	}
+	
+	public static void testReuseHufs(int repetitions) {
+		System.out.println("testReuseHufs:");
+		Level [ ] levels = Level.initializedLevels(NUMLEVELS);
+		Design specs = new Design(levels[levels.length-1], STARTTAU);
+		Design result1 = hufs(specs, levels, STARTTAU);
+		specs.clean( );
+		System.out.println( );
+		Design result2 = hufs(specs, levels, STARTTAU);
+		System.out.println(result1+" "+result2);
 	}
 	
 	public static void testHufs(int repetitions) {
