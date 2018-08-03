@@ -11,7 +11,7 @@ public class Hufs {
 	public static final double STARTTAU = KIDSPERLEVEL * (NUMLEVELS-1);
 	public static final Distribution TOPSCOREDISTRIBUTION = new NormalDistribution(10.0, 2.0);
 	public static final Distribution TOPERRORDISTRIBUTION = new NormalDistribution(0.0, 1.0);	
-	public static final int TESTREPS = 1;
+	public static final int TESTREPS = 100;
 	public static boolean TRACE = Hufs.TESTREPS < 5;
 	
 	public static void main(String [ ] args) {
@@ -46,17 +46,24 @@ public class Hufs {
 		ArrayList<Double> hufsUtilities = new ArrayList<Double>( );
 		for (int r = 0; r < repetitions; r++) {
 			Design specs = new Design(levels[levels.length-1], STARTTAU);
-			System.out.println("Waterfall:");
 			Design wfResult = waterfall(specs, levels, STARTTAU);
 			wfUtilities.add(wfResult.quality);
 			specs.clean( );
-			System.out.println("Hufs:");
 			Design hufsResult = hufs(specs, levels, STARTTAU);
 			hufsUtilities.add(hufsResult.quality);
 		}
+		ArrayList<Double> differences = new ArrayList<Double>( );
+		int hufsBetterCt=0;
 		Stats.printMeanStDev("waterfall:", wfUtilities);
 		Stats.printMeanStDev(" hufs:", hufsUtilities);
-		
+		int listSize = wfUtilities.size();
+		for (int n = 0; n< listSize; n++) {
+			differences.add(hufsUtilities.get(n)-wfUtilities.get(n));
+			if (hufsUtilities.get(n) > 0) {
+				hufsBetterCt++;
+			}
+		}
+		Stats.printMeanStDev(" differences:", differences);
 	}
 	
 	public static void testWaterfall(int repetitions) {
