@@ -42,7 +42,7 @@ public class Design {
 			parent.kids.add(newChild);
 			traceReuse(newChild, tau);
 		}
-		parent.cachedKidsUsed ++;  // we have either reused a existing child or created and cached a new one
+		parent.cachedKidsUsed ++;  // we have either reused a child or created, cached, and used a new one
 		return newChild;
 	}
 	
