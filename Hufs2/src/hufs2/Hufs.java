@@ -42,16 +42,21 @@ public class Hufs {
 		Level [ ] levels = Level.initializedLevels(NUMLEVELS);
 //		ArrayList<Design> results = new ArrayList<Design>( );
 //		ArrayList<Double> scores = new ArrayList<Double>( );
-//		ArrayList<Double> utilities = new ArrayList<Double>( );
+		ArrayList<Double> wfUtilities = new ArrayList<Double>( );
+		ArrayList<Double> hufsUtilities = new ArrayList<Double>( );
 		for (int r = 0; r < repetitions; r++) {
 			Design specs = new Design(levels[levels.length-1], STARTTAU);
 			System.out.println("Waterfall:");
 			Design wfResult = waterfall(specs, levels, STARTTAU);
+			wfUtilities.add(wfResult.quality);
 			specs.clean( );
 			System.out.println("Hufs:");
 			Design hufsResult = hufs(specs, levels, STARTTAU);
-			
+			hufsUtilities.add(hufsResult.quality);
 		}
+		Stats.printMeanStDev("waterfall:", wfUtilities);
+		Stats.printMeanStDev(" hufs:", hufsUtilities);
+		
 	}
 	
 	public static void testWaterfall(int repetitions) {
