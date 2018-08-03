@@ -88,7 +88,7 @@ public class Hufs {
 		Design parent = specs;
 		allDesigns.add(parent);
 		while (! parent.level.isBottomLevel() && tau > 0.0) {
-			Design child = new Design(parent, tau);
+			Design child = parent.generate(tau);
 			tau -= parent.level.genTime;
 			allDesigns.add(child);
 			parent = bestByUtility(allDesigns, tau, U0);
