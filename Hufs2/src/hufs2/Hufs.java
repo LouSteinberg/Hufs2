@@ -54,17 +54,19 @@ public class Hufs {
 		}
 		ArrayList<Double> differences = new ArrayList<Double>( );
 		int hufsBetterCt=0;
-		Stats.printMeanStDev("waterfall:", wfUtilities);
+		Stats.printMeanStDev(" waterfall:", wfUtilities);
 		Stats.printMeanStDev(" hufs:", hufsUtilities);
 		int listSize = wfUtilities.size();
 		for (int n = 0; n< listSize; n++) {
 			differences.add(hufsUtilities.get(n)-wfUtilities.get(n));
-			if (hufsUtilities.get(n) > 0) {
+			if (differences.get(n) > 0) {
 				hufsBetterCt++;
 			}
 		}
 		Stats.printMeanStDev(" differences:", differences);
-	}
+		System.out.println("count of hufs better: "+((0.0+hufsBetterCt)/listSize));
+	 } 
+	
 	
 	public static void testWaterfall(int repetitions) {
 		System.out.println("testWaterfall:");
