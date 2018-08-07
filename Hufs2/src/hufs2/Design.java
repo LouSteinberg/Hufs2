@@ -23,7 +23,7 @@ public class Design {
 	double tauCreated;
 	
 	public String toString( ) {
-		return String.format("Design=%d:level=%d:sc=%1.1f", id, level.number,  score);
+		return String.format("Design=%d;level=%d;parent= %d;sc=%1.1f", id, level.number, parent.id, score);
 	}
 	
 	// reuse an existing Design object, or create a new one if can't reuse
