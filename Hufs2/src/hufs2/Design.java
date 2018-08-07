@@ -80,11 +80,11 @@ public class Design {
 		newDesign.quality = newDesign.score - newDesign.error;
 		//newDesign.score = newDesign.level.scoreFromQuality(newDesign.quality);
 
-		double cSDMean = newDesign.level.cSDMeanB + newDesign.level.cSDMeanM * newDesign.score;
+		double cSDMean = newDesign.level.cSDMeanB + newDesign.level.cSDMeanM * newDesign.quality;
 		double cSDStDev = newDesign.level.cSDStDev;
 		newDesign.childScoreDistribution =  new NormalDistribution(cSDMean, cSDStDev);				
 
-		double cEDMean = newDesign.level.cEDMeanB + newDesign.level.cEDMeanM * newDesign.score;
+		double cEDMean = newDesign.level.cEDMeanB + newDesign.level.cEDMeanM * newDesign.quality;
 		double cEDStDev = newDesign.level.cEDStDev;
 		newDesign.childErrorDistribution =  new NormalDistribution(cEDMean, cEDStDev);				
 
