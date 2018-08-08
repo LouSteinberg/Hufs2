@@ -46,7 +46,7 @@ public class Hufs {
 		ArrayList<Double> hufsUtilities = new ArrayList<Double>( );
 		for (int r = 0; r < repetitions; r++) {
 			Design specs = new Design(levels[levels.length-1], STARTTAU);
-			Design wfResult = waterfall(specs, levels, STARTTAU);
+			Design wfResult = waterfall(specs, levels, (int) STARTTAU/(NUMLEVELS-1), STARTTAU);
 			wfUtilities.add(wfResult.quality);
 			specs.clean( );
 			Design hufsResult = hufs(specs, levels, STARTTAU);
@@ -76,7 +76,7 @@ public class Hufs {
 		ArrayList<Double> utilities = new ArrayList<Double>( );
 		for (int r = 0; r < repetitions; r++) {
 			Design specs = new Design(levels[levels.length-1], STARTTAU);
-			Design result = waterfall(specs, levels, STARTTAU);
+			Design result = waterfall(specs, levels, (int)STARTTAU/(NUMLEVELS-1), STARTTAU);
 			results.add(result);
 			scores.add(result.score);
 			utilities.add(Hufs.U0.apply(result.score,0.0));
@@ -84,11 +84,17 @@ public class Hufs {
 		Stats.printMeanStDev(" scores:", scores);
 		Stats.printMeanStDev(" utilities:",utilities);
 	}
+	public static int numLevel0Kids(Level [ ] levels, int level1Kids, double startTau) {
+		int level0Kids = (int) Math.floor((startTau - level1Kids * levels[2].genTime)/levels[1].genTime);
+		return level0Kids;
+	}
 	
-	public static Design waterfall(Design specs, Level [ ] levels, double tau) { 
+	public static Design waterfall(Design specs, Level [ ] levels, int level1Kids, double tau) { 
 		Design parent = specs;
+		int level0Kids = numLevel0Kids(levels, level1Kids, tau);
+		int [ ] levelKids = {level0Kids, level1Kids};  
 		for (int levelNum = NUMLEVELS - 1; levelNum > 0; levelNum--) {
-			for (int j = 0; j < KIDSPERLEVEL; j++) {
+			for (int j = 0; j < levelKids[levelNum - 1]; j++) {
 				Design child = parent.generate(tau);
 				tau -= parent.level.genTime;
 				parent.kids.add(child);
