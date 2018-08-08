@@ -6,10 +6,19 @@ import java.util.ArrayList;
 public class AllWaterfall {
 
 	public static void main(String[] args) {
-//		test allWaterfall
+//		test allHufsfall
+		System.out.println("test allHufs:");
+		Level [ ] levels = Level.initializedLevels(Hufs.NUMLEVELS);
+		Design specs = new Design(levels[levels.length-1], Hufs.STARTTAU);
+		ArrayList<Design> justSpecs = new ArrayList<Design>( );
+		justSpecs.add(specs);
+		ArrayList<Design> results = allHufs(justSpecs, Hufs.STARTTAU);
+		for (Design d : results) {
+			System.out.format("%s at %5.2f%n", d, d.tauCreated);
+		}
 	}
 	
-	public static ArrayList<Design> allWaterfall(ArrayList<Design> parentDesigns, double tau) {
+	public static ArrayList<Design> allHufs(ArrayList<Design> parentDesigns, double tau) {
 		if (tau <= 0) {
 			return new ArrayList<Design>( );
 		} else {
@@ -19,11 +28,11 @@ public class AllWaterfall {
 			int last = newParentDesigns.size( )-1;
 			for (Design dp : parentDesigns) {
 				double doneTau = tau - dp.level.genTime; 
-				if (doneTau >= 0) {
+				if (doneTau >= 0 && ! dp.level.isBottomLevel()) {
 					Design newChild = dp.generate(tau);
 					resultDesigns.add(newChild);
 					newParentDesigns.set(last, newChild);
-					resultDesigns.addAll(allWaterfall(newParentDesigns, doneTau));
+					resultDesigns.addAll(allHufs(newParentDesigns, doneTau));
 				}
 			}
 			return resultDesigns;
